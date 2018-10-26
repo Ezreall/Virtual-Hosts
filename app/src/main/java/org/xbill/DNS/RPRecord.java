@@ -1,5 +1,4 @@
 // Copyright (c) 1999-2004 Brian Wellington (bwelling@xbill.org)
-
 package org.xbill.DNS;
 
 import java.io.*;
@@ -11,72 +10,76 @@ import java.io.*;
  * @author Tom Scola (tscola@research.att.com)
  * @author Brian Wellington
  */
-
 public class RPRecord extends Record {
+    private static final long serialVersionUID = 8124584364211337460L;
+    private Name mailbox;
+    private Name textDomain;
 
-private static final long serialVersionUID = 8124584364211337460L;
+    RPRecord() {
+    }
 
-private Name mailbox;
-private Name textDomain;
+    Record
+    getObject() {
+        return new RPRecord();
+    }
 
-RPRecord() {}
+    /**
+     * Creates an RP Record from the given data
+     *
+     * @param mailbox    The responsible person
+     * @param textDomain The address where TXT records can be found
+     */
+    public RPRecord(Name name, int dclass, long ttl, Name mailbox, Name textDomain) {
+        super(name, Type.RP, dclass, ttl);
 
-Record
-getObject() {
-	return new RPRecord();
-}
+        this.mailbox = checkName("mailbox", mailbox);
+        this.textDomain = checkName("textDomain", textDomain);
+    }
 
-/**
- * Creates an RP Record from the given data
- * @param mailbox The responsible person
- * @param textDomain The address where TXT records can be found
- */
-public
-RPRecord(Name name, int dclass, long ttl, Name mailbox, Name textDomain) {
-	super(name, Type.RP, dclass, ttl);
+    void
+    rrFromWire(DNSInput in) throws IOException {
+        mailbox = new Name(in);
+        textDomain = new Name(in);
+    }
 
-	this.mailbox = checkName("mailbox", mailbox);
-	this.textDomain = checkName("textDomain", textDomain);
-}
+    void
+    rdataFromString(Tokenizer st, Name origin) throws IOException {
+        mailbox = st.getName(origin);
+        textDomain = st.getName(origin);
+    }
 
-void
-rrFromWire(DNSInput in) throws IOException {
-	mailbox = new Name(in);
-	textDomain = new Name(in);
-}
+    /**
+     * Converts the RP Record to a String
+     */
+    String
+    rrToString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append(mailbox);
+        sb.append(" ");
+        sb.append(textDomain);
+        return sb.toString();
+    }
 
-void
-rdataFromString(Tokenizer st, Name origin) throws IOException {
-	mailbox = st.getName(origin);
-	textDomain = st.getName(origin);
-}
+    /**
+     * Gets the mailbox address of the RP Record
+     */
+    public Name
+    getMailbox() {
+        return mailbox;
+    }
 
-/** Converts the RP Record to a String */
-String
-rrToString() {
-	StringBuffer sb = new StringBuffer();
-	sb.append(mailbox);
-	sb.append(" ");
-	sb.append(textDomain);
-	return sb.toString();
-}
+    /**
+     * Gets the text domain info of the RP Record
+     */
+    public Name
+    getTextDomain() {
+        return textDomain;
+    }
 
-/** Gets the mailbox address of the RP Record */
-public Name
-getMailbox() {
-	return mailbox;
-}
-
-/** Gets the text domain info of the RP Record */
-public Name
-getTextDomain() {
-	return textDomain;
-}
-
-void
-rrToWire(DNSOutput out, Compression c, boolean canonical) {
-	mailbox.toWire(out, null, canonical);
-	textDomain.toWire(out, null, canonical);
-}
+    void
+    rrToWire(DNSOutput out, Compression c, boolean canonical) {
+        mailbox.toWire(out, null, canonical);
+        textDomain.toWire(out, null, canonical);
+    }
 
 }

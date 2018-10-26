@@ -1,5 +1,4 @@
 // Copyright (c) 2003-2004 Brian Wellington (bwelling@xbill.org)
-
 package org.xbill.DNS;
 
 /**
@@ -7,12 +6,9 @@ package org.xbill.DNS;
  *
  * @author Brian Wellington
  */
-
 public class InvalidTypeException extends IllegalArgumentException {
-
-public
-InvalidTypeException(int type) {
-	super("Invalid DNS type: " + type);
-}
+    public InvalidTypeException(int type) {
+        super("Invalid DNS type: " + type);
+    }
 
 }

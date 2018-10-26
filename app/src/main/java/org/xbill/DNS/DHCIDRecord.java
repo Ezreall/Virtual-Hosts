@@ -1,8 +1,8 @@
 // Copyright (c) 2008 Brian Wellington (bwelling@xbill.org)
-
 package org.xbill.DNS;
 
 import java.io.*;
+
 import org.xbill.DNS.utils.base64;
 
 /**
@@ -10,56 +10,54 @@ import org.xbill.DNS.utils.base64;
  *
  * @author Brian Wellington
  */
-
 public class DHCIDRecord extends Record {
+    private static final long serialVersionUID = -8214820200808997707L;
+    private byte[] data;
 
-private static final long serialVersionUID = -8214820200808997707L;
+    DHCIDRecord() {
+    }
 
-private byte [] data;
+    Record
+    getObject() {
+        return new DHCIDRecord();
+    }
 
-DHCIDRecord() {}
+    /**
+     * Creates an DHCID Record from the given data
+     *
+     * @param data The binary data, which is opaque to DNS.
+     */
+    public DHCIDRecord(Name name, int dclass, long ttl, byte[] data) {
+        super(name, Type.DHCID, dclass, ttl);
+        this.data = data;
+    }
 
-Record
-getObject() {
-	return new DHCIDRecord();
-}
+    void
+    rrFromWire(DNSInput in) throws IOException {
+        data = in.readByteArray();
+    }
 
-/**
- * Creates an DHCID Record from the given data
- * @param data The binary data, which is opaque to DNS.
- */
-public
-DHCIDRecord(Name name, int dclass, long ttl, byte [] data) {
-	super(name, Type.DHCID, dclass, ttl);
-	this.data = data;
-}
+    void
+    rdataFromString(Tokenizer st, Name origin) throws IOException {
+        data = st.getBase64();
+    }
 
-void
-rrFromWire(DNSInput in) throws IOException {
-	data = in.readByteArray();
-}
+    void
+    rrToWire(DNSOutput out, Compression c, boolean canonical) {
+        out.writeByteArray(data);
+    }
 
-void
-rdataFromString(Tokenizer st, Name origin) throws IOException {
-	data = st.getBase64();
-}
+    String
+    rrToString() {
+        return base64.toString(data);
+    }
 
-void
-rrToWire(DNSOutput out, Compression c, boolean canonical) {
-	out.writeByteArray(data);
-}
-
-String
-rrToString() {
-	return base64.toString(data);
-}
-
-/**
- * Returns the binary data.
- */
-public byte []
-getData() {
-	return data;
-}
+    /**
+     * Returns the binary data.
+     */
+    public byte[]
+    getData() {
+        return data;
+    }
 
 }

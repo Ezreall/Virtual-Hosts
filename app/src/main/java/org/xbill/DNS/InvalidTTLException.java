@@ -1,5 +1,4 @@
 // Copyright (c) 2003-2004 Brian Wellington (bwelling@xbill.org)
-
 package org.xbill.DNS;
 
 /**
@@ -7,12 +6,9 @@ package org.xbill.DNS;
  *
  * @author Brian Wellington
  */
-
 public class InvalidTTLException extends IllegalArgumentException {
-
-public
-InvalidTTLException(long ttl) {
-	super("Invalid DNS TTL: " + ttl);
-}
+    public InvalidTTLException(long ttl) {
+        super("Invalid DNS TTL: " + ttl);
+    }
 
 }

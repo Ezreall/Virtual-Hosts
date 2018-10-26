@@ -1,25 +1,25 @@
 /*
-**Copyright (C) 2017  xfalcon
-**
-**This program is free software: you can redistribute it and/or modify
-**it under the terms of the GNU General Public License as published by
-**the Free Software Foundation, either version 3 of the License, or
-**(at your option) any later version.
-**
-**This program is distributed in the hope that it will be useful,
-**but WITHOUT ANY WARRANTY; without even the implied warranty of
-**MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**GNU General Public License for more details.
-**
-**You should have received a copy of the GNU General Public License
-**along with this program.  If not, see <http://www.gnu.org/licenses/>.
-**
-*/
-
+ **Copyright (C) 2017  xfalcon
+ **
+ **This program is free software: you can redistribute it and/or modify
+ **it under the terms of the GNU General Public License as published by
+ **the Free Software Foundation, either version 3 of the License, or
+ **(at your option) any later version.
+ **
+ **This program is distributed in the hope that it will be useful,
+ **but WITHOUT ANY WARRANTY; without even the implied warranty of
+ **MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ **GNU General Public License for more details.
+ **
+ **You should have received a copy of the GNU General Public License
+ **along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ **
+ */
 package com.github.xfalcon.vhosts;
 
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
+
 import com.baidu.mobstat.StatService;
 
 import android.content.*;
@@ -39,18 +39,13 @@ import java.lang.reflect.Field;
 import java.io.InputStream;
 
 public class VhostsActivity extends AppCompatActivity {
-
     //first commit
-
     private static final String TAG = VhostsActivity.class.getSimpleName();
     private static final int VPN_REQUEST_CODE = 0x0F;
     private static final int SELECT_FILE_CODE = 0x05;
     public static final String PREFS_NAME = VhostsActivity.class.getName();
     public static final String HOSTS_URI = "HOST_URI";
-
-
     private boolean waitingForVPNStart;
-
     private BroadcastReceiver vpnStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -67,12 +62,12 @@ public class VhostsActivity extends AppCompatActivity {
         launch();
         StatService.autoTrace(this, true, false);
         setContentView(R.layout.activity_vhosts);
-        LogUtils.context=getApplicationContext();
-        final SwitchButton vpnButton = (SwitchButton) findViewById(R.id.button_start_vpn);
+        LogUtils.context = getApplicationContext();
+        final SwitchButton vpnButton = findViewById(R.id.button_start_vpn);
 
-        final Button selectHosts = (Button) findViewById(R.id.button_select_hosts);
-        final FloatingActionButton fab_boot = (FloatingActionButton) findViewById(R.id.fab_boot);
-        final FloatingActionButton fab_donation = (FloatingActionButton) findViewById(R.id.fab_donation);
+        final Button selectHosts = findViewById(R.id.button_select_hosts);
+        final FloatingActionButton fab_boot = findViewById(R.id.fab_boot);
+        final FloatingActionButton fab_donation = findViewById(R.id.fab_donation);
         if (!checkHostUri()) {
             selectHosts.setText(getString(R.string.select_hosts));
         }
@@ -97,15 +92,15 @@ public class VhostsActivity extends AppCompatActivity {
         fab_boot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(BootReceiver.getEnabled(v.getContext())){
-                    BootReceiver.setEnabled(v.getContext(),false);
+                if (BootReceiver.getEnabled(v.getContext())) {
+                    BootReceiver.setEnabled(v.getContext(), false);
                     fab_boot.setColorNormalResId(R.color.startup_off);
-                }else{
-                    BootReceiver.setEnabled(v.getContext(),true);
+                } else {
+                    BootReceiver.setEnabled(v.getContext(), true);
                     fab_boot.setColorNormalResId(R.color.startup_on);
                 }
             }
-        }) ;
+        });
         selectHosts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,7 +110,7 @@ public class VhostsActivity extends AppCompatActivity {
         fab_donation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),DonationActivity.class));
+                startActivity(new Intent(getApplicationContext(), DonationActivity.class));
             }
         });
 
@@ -123,15 +118,15 @@ public class VhostsActivity extends AppCompatActivity {
                 new IntentFilter(VhostsService.BROADCAST_VPN_STATE));
     }
 
-    private void launch(){
-        Uri uri=getIntent().getData();
-        if(uri==null)return;
-        String data_str=uri.toString();
-        if("on".equals(data_str)){
-            if(!VhostsService.isRunning())
-            VhostsService.startVService(this);
+    private void launch() {
+        Uri uri = getIntent().getData();
+        if (uri == null) return;
+        String data_str = uri.toString();
+        if ("on".equals(data_str)) {
+            if (!VhostsService.isRunning())
+                VhostsService.startVService(this);
             finish();
-        }else if("off".equals(data_str)){
+        } else if ("off".equals(data_str)) {
             VhostsService.stopVService(this);
             finish();
         }
@@ -143,7 +138,7 @@ public class VhostsActivity extends AppCompatActivity {
         try {
             Field f = android.provider.DocumentsContract.class.getField("EXTRA_SHOW_ADVANCED");
             intent.putExtra(f.get(f.getName()).toString(), true);
-        } catch (Throwable  e) {
+        } catch (Throwable e) {
             LogUtils.e(TAG, "SET EXTRA_SHOW_ADVANCED", e);
         }
 
@@ -236,8 +231,8 @@ public class VhostsActivity extends AppCompatActivity {
     }
 
     private void setButton(boolean enable) {
-        final SwitchButton vpnButton = (SwitchButton) findViewById(R.id.button_start_vpn);
-        final Button selectHosts = (Button) findViewById(R.id.button_select_hosts);
+        final SwitchButton vpnButton = findViewById(R.id.button_start_vpn);
+        final Button selectHosts = findViewById(R.id.button_select_hosts);
         if (enable) {
             vpnButton.setChecked(false);
             selectHosts.setAlpha(1.0f);

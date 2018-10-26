@@ -1,5 +1,4 @@
 // Copyright (c) 2002-2004 Brian Wellington (bwelling@xbill.org)
-
 package org.xbill.DNS;
 
 /**
@@ -8,17 +7,13 @@ package org.xbill.DNS;
  *
  * @author Brian Wellington
  */
-
 public class NameTooLongException extends WireParseException {
+    public NameTooLongException() {
+        super();
+    }
 
-public
-NameTooLongException() {
-	super();
-}
-
-public
-NameTooLongException(String s) {
-	super(s);
-}
+    public NameTooLongException(String s) {
+        super(s);
+    }
 
 }

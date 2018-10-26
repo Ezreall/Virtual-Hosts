@@ -4,6 +4,7 @@ import java.net.*;
 
 /**
  * Custom logger that can log all the packets that were send or received.
+ *
  * @author Damian Minkov
  */
 public interface PacketLogger {
